@@ -2,7 +2,7 @@ FROM mongo:latest
 LABEL author="Adico"
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-COPY ./.docker/mongo_scripts /usr/src/app
+COPY kinder-setup/.docker/mongo_scripts /usr/src/app
 RUN chmod +rx /usr/src/app/*.sh
 EXPOSE 27017
 ENTRYPOINT ["/usr/src/app/db-setup.sh"]
