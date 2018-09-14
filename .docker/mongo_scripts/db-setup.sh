@@ -1,3 +1,4 @@
 #!/bin/bash
 
-mongo 127.0.0.1:27017 /Users/adi/work/kinder-setup/db-setup.js
+sleep 30
+mongo 127.0.0.1:27017 /usr/src/app/db-setup.js
