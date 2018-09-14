@@ -5,6 +5,6 @@ COPY react-material-ui-keyboard /usr/src/app/react-material-ui-keyboard
 WORKDIR /usr/src/app/react-loading-screen
 RUN rm -rf /usr/src/app/react-loading-screen/package-lock.json
 RUN npm install
-RUN chmod +rx /usr/src/app/react-loading-screen/*.sh
+RUN sudo bash -c 'chmod +rx /usr/src/app/react-loading-screen/*.sh'
 EXPOSE 3000
 ENTRYPOINT ["/usr/src/app/react-loading-screen/start.sh"]
