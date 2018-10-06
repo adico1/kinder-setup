@@ -41,17 +41,23 @@ function createRolesCollection(dbs) {
   const collectionName = 'employee_roles';
 
   const ceo_role = { "_id" : ObjectId("5b7724c904e891395cbdcbe1"), name: 'CEO', description: 'Chief Executive Office'};
-  const assist_teacher_role = { "_id" : ObjectId("5b7724c904e891395cbdcbe2"), name: 'AssitTeacher', description: 'Assistant kindergarten teacher'};
-  const teacher_role = { "_id" : ObjectId("5b7724c904e891395cbdcbe3"), name: 'Teacher', description: 'Kindergarten teacher'};
+  const assist_teacher_role = { "_id" : ObjectId("5b7724c904e891395cbdcbe2"), name: 'סיעת', description: 'Assistant kindergarten teacher'};
+  const teacher_role = { "_id" : ObjectId("5b7724c904e891395cbdcbe3"), name: 'גננת', description: 'Kindergarten teacher'};
   const director_role = { "_id" : ObjectId("5b7724c904e891395cbdcbe4"), name: 'Director', description: 'Director of the Kindergarten'};
   const maintenence_role = { "_id" : ObjectId("5b7724c904e891395cbdcbe5"), name: 'Maintenece', description: 'Maintenence'};
-
+  const speech_therapist = { "_id" : ObjectId("5b7724c904e891395cbdcbe6"), name: 'קלינאית תקשורת', description: 'קלינאית תקשורת'};
+  const occupational_therapist = { "_id" : ObjectId("5b7724c904e891395cbdcbe7"), name: 'מרפאה בעיסוק', description: 'מרפאה בעיסוק'};
+  const emotional_therapist = { "_id" : ObjectId("5b7724c904e891395cbdcbe8"), name: 'מטפלת רגשית', description: 'מטפלת רגשית'};
+  
   const employeeRoles = [];
   employeeRoles.push(ceo_role);
   employeeRoles.push(assist_teacher_role);
   employeeRoles.push(teacher_role);
   employeeRoles.push(director_role);
   employeeRoles.push(maintenence_role);
+  employeeRoles.push(speech_therapist);
+  employeeRoles.push(occupational_therapist);
+  employeeRoles.push(emotional_therapist);
 
   createCollection(dbs, collectionName, employeeRoles);
 }
@@ -67,18 +73,18 @@ function listRolesCollection(dbs) {
 function createEmployeesCollection(dbs) {
   const collectionName = 'employees';
 
-  const ceo = { "_id" : ObjectId("5b7735edf3796162842506c1"), password: 'password', name: 'אהובה מלמד', role: ObjectId("5b7724c904e891395cbdcbe1")};
-  const employee1 = { "_id" : ObjectId("5b7735edf3796162842506c2"), kindergartenId: ObjectId("5b7735edf3796162842507c1"), hrcore: '1234', name: 'חוה גולדשטיין', role: ObjectId("5b7724c904e891395cbdcbe3")};
-  const employee2 = { "_id" : ObjectId("5b7735edf3796162842506c3"), kindergartenId: ObjectId("5b7735edf3796162842507c1"), hrcore: '2345', name: 'ברכה לוין', role: ObjectId("5b7724c904e891395cbdcbe4")};
-  const employee3 = { "_id" : ObjectId("5b7735edf3796162842506c4"), kindergartenId: ObjectId("5b7735edf3796162842507c1"), hrcore: '3456', name: 'ברוריה שליו', role: ObjectId("5b7724c904e891395cbdcbe2")};
-  const employee4 = { "_id" : ObjectId("5b7735edf3796162842506c5"), kindergartenId: ObjectId("5b7735edf3796162842507c1"), hrcore: '4567', name: 'אסתר פינקלשטיין', role: ObjectId("5b7724c904e891395cbdcbe2")};
-
+  const g1kt = { "_id" : ObjectId("5b7735edf3796162842506c1"), kindergartenId: ObjectId("5b7735edf3796162842507c1"), hrcore: '3418', name: 'אביבי נעמה', role: ObjectId("5b7724c904e891395cbdcbe3")};
+  const g1kta = { "_id" : ObjectId("5b7735edf3796162842506c2"), kindergartenId: ObjectId("5b7735edf3796162842507c1"), hrcore: '9189', name: 'כהן חנה', role: ObjectId("5b7724c904e891395cbdcbe2")};
+  const g1st = { "_id" : ObjectId("5b7735edf3796162842506c3"), kindergartenId: ObjectId("5b7735edf3796162842507c1"), hrcore: '2778', name: 'גלר יעל', role: ObjectId("5b7724c904e891395cbdcbe6")};
+  const g1ot = { "_id" : ObjectId("5b7735edf3796162842506c4"), kindergartenId: ObjectId("5b7735edf3796162842507c1"), hrcore: '9574', name: 'אשואל מעין', role: ObjectId("5b7724c904e891395cbdcbe7")};
+  const g1et = { "_id" : ObjectId("5b7735edf3796162842506c5"), kindergartenId: ObjectId("5b7735edf3796162842507c1"), hrcore: '9082', name: 'מצגר אילה', role: ObjectId("5b7724c904e891395cbdcbe8")};
+  
   const employees = [];
-  employees.push(ceo);
-  employees.push(employee1);
-  employees.push(employee2);
-  employees.push(employee3);
-  employees.push(employee4);
+  employees.push(g1kt);
+  employees.push(g1kta);
+  employees.push(g1st);
+  employees.push(g1ot);
+  employees.push(g1et);
 
   createCollection(dbs, collectionName, employees);
 }
