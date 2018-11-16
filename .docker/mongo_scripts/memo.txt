@@ -1,0 +1,217 @@
+
+kids
+{
+	kidId: 234243423432432,
+	lname: "Gavrieli",
+	fname: "Moshe",
+	mname: "",
+	address: "",
+	momPhone: "",
+	fatherPhone: "",
+	…
+	registrar: [{kindergartenId: 2342342424342343, year:2000, class: ‘A’}]
+}
+
+kids_presence_report
+{
+	kindergartenId: ObjectId("5b7735edf3796162842507c1"),
+	date: 2018/1/1,
+	presence: [
+		{kidid: ObjectId("5b7735edf3796162942506c1"), in: 08:00, out: 16:00 },
+		{kidid: ObjectId("5b7735edf3796162942506c2"), in: 08:00, out: 16:00 },
+		{kidid: ObjectId("5b7735edf3796162942506c3"), in: 08:00, out: 16:00 },
+		{kidid: ObjectId("5b7735edf3796162942506c4"), in: 08:00, out: 16:00 },
+		{kidid: ObjectId("5b7735edf3796162942506c5"), in: 08:00, out: 16:00 },
+		{kidid: ObjectId("5b7735edf3796162942506c6"), in: 08:00, out: 16:00 },
+		{kidid: ObjectId("5b7735edf3796162942506c7"), in: 08:00, out: 16:00 },
+		{kidid: ObjectId("5b7735edf3796162942506c8"), in: 08:00, out: 16:00 },
+	]
+}
+
+
+db.kids_presence_report.insert([
+	{kindergartenId: ObjectId("5b7735edf3796162842507c1"), date: new ISODate("2018-01-01"), presence: [ 
+		{kidid: ObjectId("5b7735edf3796162942506c2"), in: 28800, out: 57600 },
+		{kidid: ObjectId("5b7735edf3796162942506c3"), in: 28800, out: 57600 },
+		{kidid: ObjectId("5b7735edf3796162942506c4"), in: 28800, out: 57600 },
+		{kidid: ObjectId("5b7735edf3796162942506c5"), in: 28800, out: 57600 },
+		{kidid: ObjectId("5b7735edf3796162942506c6"), in: 28800, out: 57600 },
+		{kidid: ObjectId("5b7735edf3796162942506c7"), in: 28800, out: 57600 },
+		{kidid: ObjectId("5b7735edf3796162942506c8"), in: 28800, out: 57600 },
+		{kidid: ObjectId("5b7735edf3796162942506c9"), in: 28800, out: 57600 },
+		{kidid: ObjectId("5b7735edf3796162942506ca"), in: 28800, out: 57600 },
+		{kidid: ObjectId("5b7735edf3796162942506cb"), in: 28800, out: 57600 },
+	]}]);
+
+db.kids.find({"registrar.kindergartenId" : ObjectId("5b7735edf3796162842507c1"), "registrar.year": 2018})
+db.kids.find({"registrar":{"kindergartenId" : ObjectId("5b7735edf3796162842507c1"), "year": 2018}})
+
+db.kids.aggregate([
+	{$lookup:{from:"kids_presence_report",localField:"_id", foreignField:"presence.kidId", as:"report"}}
+])
+
+db.kids.aggregate([
+	{$lookup:{from:"kids_presence_report",localField:"_id", foreignField:"presence.kidId", as:"report"}},
+	{$match: {"report._id":{eq:"_id"}}}
+])
+
+db.kids.aggregate([
+	{$unwind:"presence"},
+	{$lookup:{from:"kids_presence_report",localField:"_id", foreignField:"presence.kidid", as:"report"}},
+	{$match: {"report._id":{eq:"_id"}}}
+])
+
+
+db.kids.aggregate([
+	{$unwind:"presence"},
+	{$lookup:{from:"kids_presence_report",localField:"_id", foreignField:"presence.kidid", as:"report"}},
+	{$match: {"report._id":{eq:"_id"}}}
+])
+
+
+
+
+
+db.kids.aggregate([ 
+  {$lookup:{from:"kids_presence_report",localField:"_id", foreignField:"presence.kidid", as:"report"}}
+])
+
+
+
+
+db.kids.aggregate([ 
+  {$lookup:{from:"kids_presence_report",localField:"_id", foreignField:"presence.kidid", as:"report"}},
+	{$match: {"_id":{$eq:"report.presence.kidid"}}}
+])
+
+db.kids.aggregate([ 
+  {$lookup:{from:"kids_presence_report",localField:"_id", foreignField:"presence.kidid", as:"report"}},
+	{$match: {"_id":{$eq:ObjectId("5b7735edf3796162942506c1")}}}
+])
+
+db.kids.aggregate([ 
+  {$lookup:{from:"kids_presence_report",localField:"_id", foreignField:"presence.kidid", as:"report"}},
+	{$match: {"report.presence.kidid":{$eq:ObjectId("5b7735edf3796162942506c4")}}}
+])
+
+
+db.kids_presence_report.aggregate([ 
+  {$lookup:{from:"kids",localField:"presence.kidid", foreignField:"_id", as:"report"}}
+])
+
+db.kids_presence_report.aggregate([   
+	{$unwind:"$presence"},
+  {$lookup:{from:"kids",localField:"kidid", foreignField:"_id", as:"report"}} 
+])
+
+
+
+
+db.kids_presence_report.aggregate([ 
+  {$unwind:"$presence"},   
+  {$lookup:{from:"kids",localField:"presence.kidid", foreignField:"_id", as:"report"}}
+])
+
+
+
+db.kids.aggregate([
+   {
+      $lookup:
+         {
+           from: "kids_presence_report",
+           pipeline: [
+              { $match: { date: 2018 } },
+              { $project: { _id: 0, date: { presence: "$in", date: "$out" } } },
+              { $replaceRoot: { newRoot: "$presence" } }
+           ],
+           as: "report"
+         }
+    }
+])
+
+
+
+db.kids_presence_report.updateOne(
+	{
+		"kindergartenId" : ObjectId("5b7735edf3796162842507c1"), 
+		"date" : ISODate("2018-11-15T00:00:00Z")
+	},
+	{
+		$push: { 
+			presence: {
+				"kidid" : ObjectId("5b7735edf3796162942506d4"), 
+				"in" : 28800
+			} 
+		}
+	},
+	{ upsert: true }
+)
+
+db.kids_presence_report.update(
+	{
+		"kindergartenId" : ObjectId("5b7735edf3796162842507c1"), 
+		"date" : ISODate("2018-01-01T00:00:00Z")
+	},
+	{
+		$push: { 
+			presence: {
+				"kidid" : ObjectId("5b7735edf3796162942506d4"), 
+				"in" : 28800, 
+				"out" : null 
+			}
+		}
+	})
+
+
+db.kids_presence_report.updateOne(
+  {
+		 "kindergartenId" : ObjectId("5b7735edf3796162842507c1"), 
+		 "date" : ISODate("2018-01-01T00:00:00Z"), 
+		 "presence.kidid": ObjectId("5b7735edf3796162942506d4")
+	},
+  { 
+		$set: { "presence.$.out": 12345 } 
+	}
+)
+
+
+
+REMOVE FIELD
+
+db.kids_presence_report.update(
+   { _id: ObjectId("5be4ca448b6dabe964199332") },
+   { $unset: { in: "", kidid: "" } }
+)
+
+
+REMOVE FIELD out
+
+db.kids_presence_report.updateOne(
+  {
+		 "kindergartenId" : ObjectId("5b7735edf3796162842507c1"), 
+		 "date" : ISODate("2018-01-01T00:00:00Z"), 
+		 "presence.kidid": ObjectId("5b7735edf3796162942506d4")
+	},
+  { 
+		$unset: { "presence.$.out": "" } 
+	}
+)
+
+
+
+
+REMOVE FIELD in
+
+db.kids_presence_report.updateOne(
+  {
+		 "kindergartenId" : ObjectId("5b7735edf3796162842507c1"), 
+		 "date" : ISODate("2018-01-01T00:00:00Z")
+	},
+  { 
+		$pull: { 
+			"presence" : {
+				"kidid": ObjectId("5b7735edf3796162942506d4") 
+			}
+		} 
+	}
+)
